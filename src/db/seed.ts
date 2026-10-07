@@ -4,9 +4,11 @@
 
 import { sequelize } from "./connection.js";
 import { Author, Book, Loan } from "../models/index.js";
+import { Usuario } from "../models/Users.js";
 
 async function seed() {
   await sequelize.sync({ force: true });
+  await Usuario.sync();
 
   const [cortazar, borges, ocampo, bolano] = await Author.bulkCreate([
     { name: "Julio Cortázar", nationality: "Argentina" },

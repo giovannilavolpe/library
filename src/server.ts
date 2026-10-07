@@ -1,11 +1,19 @@
+import "dotenv/config";
 import express, { Request, Response } from "express";
 import { sequelize } from "./db/connection.js";
+import booksRoutes from "./routes/book.routes.js";
+import authRoutes from "./routes/auth.route.js";
 import docsRouter from "./docs.js";
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json()); // permite leer JSON del body en POST / PUT / PATCH
+
+app.use((req, res, next) => {
+  console.log(`[${Date()}]: APIs Calling`);
+  next();
+});
 
 // Ruta de prueba: si esto responde, el servidor está levantado.
 app.get("/", (req: Request, res: Response) => {
@@ -17,7 +25,8 @@ app.use("/docs", docsRouter);
 
 // 👇 Acá vas a montar tus routers:
 // app.use("/authors", authorsRoutes);
-// app.use("/books", booksRoutes);
+app.use("/books", booksRoutes);
+app.use("/auth", authRoutes);
 // app.use("/loans", loansRoutes);
 
 // Ya hecho. Si un pedido falla con un error que nadie atrapó (por ejemplo, un error
